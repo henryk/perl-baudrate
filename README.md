@@ -5,7 +5,7 @@ Perl code to set a custom serial baudrate on Linux using the TCSETS2 ioctl.
 
 Historically, baud rates on UNIX --later: POSIX-- systems have been manipulated using the tcgetattr()/tcsetattr() functions with a struct termios and a very limited set of possible rates identified by constants such as B0, B50, B75, B110, …, through B9600. These have later been extended for select values such as B38400 and B115200. Hardware has since evolved to be able to use almost any value as a baud rate, even much higher ones. The interface however, has never been properly fixed.
 
-Linux used a technique called "baud rate aliasing" to circumvent that problem in the past: A special mode can be set so that a request for B38400 would not actually set 38.4kBaud but instead a separately defined other baud rate with names like spd_hi for 57.6kBaud, spd_shi for 230kBaud or spd_warp for 460kBaud. These names may give you an idea how old and limited that interface is.
+Linux used a technique called "baud rate aliasing" to circumvent that problem in the past: A special mode can be set so that a request for B38400 would not actually set 38.4kBaud but instead a separately defined other baud rate with names like spd\_hi for 57.6kBaud, spd\_shi for 230kBaud or spd\_warp for 460kBaud. These names may give you an idea how old and limited that interface is.
 
 For this reason there is a new (and still not standard) way to set an arbitrary baud rate by actually using an integer to store the requested baud rate: TCGETS2/TCSETS2 using struct termios2.
 
@@ -17,7 +17,7 @@ eval 'sub TCGETS2 () { &_IOR(ord(\'T\'), 0x2a, 1;}' unless defined(&TCGETS2);
 ```
 (hint: count the number of opening and closing parenthesis.)
 
-Even if that Perl code was syntactically correct, it's wrong in principle: The third argument to the _IOR macro should be the struct termios2 structure size. On x86_64 it's 44 bytes, not 1.
+Even if that Perl code was syntactically correct, it's wrong in principle: The third argument to the \_IOR macro should be the struct termios2 structure size. On x86\_64 it's 44 bytes, not 1.
 
 So, this code has two purposes: a) Correctly use Perl's ioctl to b) set a custom serial baud rate under Linux.
 
