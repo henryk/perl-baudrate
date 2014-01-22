@@ -1,0 +1,35 @@
+/*
+ * get-constants.c
+ *
+ * Determine and print out all the constants needed for set-baudrate.pl
+ *
+ *  Created on: 22 Jan 2014
+ *      Author: henryk
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include "/usr/include/asm-generic/termbits.h"
+#include "/usr/include/asm-generic/ioctls.h"
+
+
+int main(int argc, const char **argv)
+{
+	struct termios2 *to = (struct termios2*)0;
+
+	printf("TCGETS2 = 0x%08X\n", TCGETS2);
+	printf("TCSETS2 = 0x%08X\n", TCSETS2);
+	printf("BOTHER = 0x%08X\n", BOTHER);
+	printf("CBAUD = 0x%08X\n", CBAUD);
+	printf("sizeof(struct termios2) = %zi\n", sizeof(*to));
+	printf("sizeof((struct termios2).c_ispeed) = %zi\n", sizeof(to->c_ispeed));
+	printf("offsetof((struct termios2).c_ispeed) = %p\n", (void*)&(to->c_ispeed));
+	printf("sizeof((struct termios2).c_ospeed) = %zi\n", sizeof(to->c_ospeed));
+	printf("offsetof((struct termios2).c_ospeed) = %p\n", (void*)&(to->c_ospeed));
+	printf("sizeof((struct termios2).c_cflag) = %zi\n", sizeof(to->c_cflag));
+	printf("offsetof((struct termios2).c_cflag) = %p\n", (void*)&(to->c_cflag));
+
+	return 0;
+}
