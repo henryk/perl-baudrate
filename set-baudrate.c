@@ -13,22 +13,11 @@
 #include "/usr/include/asm-generic/termbits.h"
 #include "/usr/include/asm-generic/ioctls.h"
 
-int main(int argc, const char **argv)
+static int set_baudrate(int fh, int baudrate)
 {
+	int r;
 	struct termios2 to;
-	int fh, r, baudrate;
-	if(argc != 3) {
-		fprintf(stderr, "Usage: %s devicenode baudrate\n", argv[0]);
-		return -1;
-	}
 
-	fh = open(argv[1], O_RDWR | O_NOCTTY);
-	if(fh < 0) {
-		perror("open");
-		return -1;
-	}
-
-	baudrate = atoi(argv[2]);
 	r = ioctl(0, TCGETS2, &to);
 	if(r) {
 		perror("TCGETS2");
@@ -41,6 +30,30 @@ int main(int argc, const char **argv)
 	r = ioctl(0, TCSETS2, &to);
 	if(r) {
 		perror("TCSETS2");
+		return -1;
+	}
+
+	return 0;
+}
+
+int main(int argc, const char **argv)
+{
+
+	int fh, baudrate;
+	if(argc != 3) {
+		fprintf(stderr, "Usage: %s devicenode baudrate\n", argv[0]);
+		return -1;
+	}
+
+	fh = open(argv[1], O_RDWR | O_NOCTTY);
+	if(fh < 0) {
+		perror("open");
+		return -1;
+	}
+
+	baudrate = atoi(argv[2]);
+
+	if(set_baudrate(fh, baudrate) < 0) {
 		return -1;
 	}
 
