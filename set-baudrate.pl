@@ -7,7 +7,7 @@
 sub set_baudrate(*;$$) {
   my ($fh, $direction, $baudrate) = @_;
 
-  my %constants_x86_64 = (
+  my %constants = (
     "TCGETS2" => 0x802C542A,
     "TCSETS2" => 0x402C542B,
     "BOTHER" => 0x00001000,
@@ -20,9 +20,6 @@ sub set_baudrate(*;$$) {
     "c_cflag_size" => 4,
     "c_cflag_offset" => 0x8,
   );
-  
-  # FIXME Dynamically select
-  my %constants = %constants_x86_64;
   
   # We can't directly use pack/unpack with a specifier like "integer of x bytes"
   # Instead, check that the native int matches the corresponding *_size properties
