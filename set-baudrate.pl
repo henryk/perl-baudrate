@@ -44,12 +44,12 @@ sub set_baudrate(*;$$) {
   
   #   B: Modify c_ispeed
   if($direction & 1) {
-    substr($to, $constants{"c_ispeed_offset"}, $constants{"i_speed_size"}) = pack "I", $baudrate;
+    substr($to, $constants{"c_ispeed_offset"}, $constants{"c_ispeed_size"}) = pack "I", $baudrate;
   }
   
-  #   B: Modify c_ospeed
+  #   C: Modify c_ospeed
   if($direction & 2) {
-    substr($to, $constants{"c_ospeed_offset"}, $constants{"o_speed_size"}) = pack "I", $baudrate;
+    substr($to, $constants{"c_ospeed_offset"}, $constants{"c_ospeed_size"}) = pack "I", $baudrate;
   }
   
   # Fourth: Call TCSETS2
